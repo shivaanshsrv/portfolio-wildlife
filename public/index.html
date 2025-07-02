@@ -2,23 +2,112 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Wildlife Photography Portfolio</title>
 
-    <!-- Inter Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-    <!-- CSS File -->
-    <link rel="stylesheet" href="style.css">
+    <!-- Fonts and CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
 
     <style>
-        /* Fallback style if style.css doesn't load */
         body {
             font-family: 'Inter', sans-serif;
             background: #fff;
             color: #333;
             padding: 2rem;
+            margin: 0;
+        }
+
+        .hero-content {
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: white;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+
+        .hero-description {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #ddd;
+        }
+
+        .about-section {
+            display: flex;
+            width: 100%;
+            flex-wrap: wrap;
+            margin: 4rem 0;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .about-img {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+        }
+
+        .about-text {
+            flex: 1;
+            background: white;
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .about-text h3 {
+            font-size: 1rem;
+            letter-spacing: 2px;
+            color: gray;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .about-text h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+
+        .about-text h4 {
+            font-weight: 500;
+            color: #888;
+            margin: 1rem 0 2rem;
+        }
+
+        .about-text p {
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .gallery-header {
+            text-align: center;
+            margin-bottom: 0.5rem;
         }
     </style>
 </head>
@@ -44,8 +133,10 @@
         <div class="hero-content">
             <h1 class="hero-title">Wild Moments Captured</h1>
             <p class="hero-subtitle">Explore the world through my lens</p>
-            <p class="hero-description">From the icy arctic to the African savanna, this portfolio tells the stories of
-                nature's beauty and fragility.</p>
+            <p class="hero-description">
+                From the icy arctic to the African savanna, this portfolio tells the stories of nature's beauty and
+                fragility.
+            </p>
         </div>
         <div class="scroll-indicator">
             <div class="scroll-arrow"></div>
@@ -53,55 +144,44 @@
     </section>
 
     <!-- About Section -->
-    <section class="about fade-in" id="about">
-        <div class="container about-content">
-            <div class="about-image">
-                <img src= \images\aboutme.jpg
-                    alt="Photographer">
-            </div>
-            <div class="about-text">
-                <h2>About Me</h2>
-                <p>I’m a wildlife photographer driven by curiosity, conservation, and a deep love for the wild. Every
-                    photograph is a moment, every expedition a mission.</p>
-                <p>Through my lens, I aim to bring the untamed world closer to everyone—one frame at a time.</p>
-            </div>
+    <section id="about" class="about-section">
+        <div class="about-img">
+            <img src="https://pixahive.com/wp-content/uploads/2020/11/man-posing-with-camera-186055-pixahive.jpg"
+                alt="About Me" />
+        </div>
+        <div class="about-text">
+            <h3>INTRODUCTION</h3>
+            <h1>About Me</h1>
+            <h4>Alex Warlord</h4>
+            <p>
+                I’m a wildlife photographer driven by curiosity, conservation, and a deep love for the wild. Whether it’s
+                the silent stare of a snow leopard or the golden stride of a lion at dusk, I aim to capture moments that
+                words can’t describe.
+            </p>
+            <p>
+                Each photograph is a story — of survival, of serenity, of the untamed. Through my lens, I don’t just
+                document nature; I bring its spirit closer to people, reminding us of the fragile beauty that exists
+                beyond our cities.
+
+                Let’s preserve it. One frame at a time..
+            </p>
         </div>
     </section>
 
+    <!-- Gallery Header -->
+    <div class="gallery-header">
+        <h2>Photo Gallery</h2>
+    </div>
+
     <!-- Gallery Section -->
-    <section class="gallery fade-in" id="gallery">
-        <div class="container">
-            <h2 class="section-title">Photo Gallery</h2>
-
-            <div class="gallery-controls">
-                <div class="search-container">
-                    <input type="text" id="searchInput" class="search-input"
-                        placeholder="Search animals, places, tags...">
-                </div>
-                <div class="filter-tags">
-                    <button class="tag-filter active" data-tag="all">All</button>
-                    <button class="tag-filter" data-tag="bird">Bird</button>
-                    <button class="tag-filter" data-tag="mammal">Mammal</button>
-                    <button class="tag-filter" data-tag="landscape">Landscape</button>
-                    <button class="tag-filter" data-tag="endangered">Endangered</button>
-                </div>
-            </div>
-
-            <div id="galleryGrid" class="gallery-grid"></div>
-        </div>
+    <section class="gallery-section" id="gallery">
+        <div class="gallery-carousel" id="galleryCarousel"></div>
     </section>
 
     <!-- Visits Section -->
     <section class="visits fade-in" id="visits">
         <div class="container">
             <h2 class="section-title">Visit Timeline</h2>
-            <div class="year-nav">
-                <button class="year-btn active" data-year="all">All Years</button>
-                <button class="year-btn" data-year="2024">2024</button>
-                <button class="year-btn" data-year="2023">2023</button>
-                <button class="year-btn" data-year="2022">2022</button>
-                <!-- <button class="year-btn" data-year="2021">2021</button> -->
-            </div>
             <div id="visitTimeline" class="visit-timeline"></div>
         </div>
     </section>
@@ -143,7 +223,7 @@
     <div class="modal" id="eventModal">
         <div class="modal-content event-modal-content">
             <span class="modal-close">&times;</span>
-            <img id="eventModalImage" src="#" alt="Event" loading="lazy">
+            <img id="eventModalImage" src="#" alt="Event" loading="lazy" />
             <div class="event-modal-text">
                 <h3 id="eventModalTitle">Event Title</h3>
                 <p id="eventModalYear">Year & Venue</p>
@@ -151,7 +231,8 @@
             </div>
         </div>
     </div>
-    <!-- Photo Detail Modal -->
+
+    <!-- Photo Modal -->
     <div id="photoModal" class="modal">
         <div class="modal-content">
             <span class="modal-close">&times;</span>
@@ -173,8 +254,7 @@
         </div>
     </div>
 
-
-    <!-- JS File -->
+    <!-- JS -->
     <script src="script.js"></script>
 </body>
 

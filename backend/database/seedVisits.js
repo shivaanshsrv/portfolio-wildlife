@@ -1,4 +1,8 @@
+// backend/database/seedVisits.js
 import { openDb } from './database.js';
+
+// Check if --verbose flag is passed
+const isVerbose = process.argv.includes('--verbose');
 
 const visitSeedData = [
     {
@@ -8,7 +12,7 @@ const visitSeedData = [
         date: 'March 2024',
         description: 'A focused expedition to document the magnificent birds of prey in the Scottish Highlands, including the endangered Golden Eagle.',
         thumbnail: '/images/bird.jpg',
-        images: '1',  // referencing photo ID(s) — comma separated string
+        images: '1',
         tags: 'bird,endangered'
     },
     {
@@ -36,32 +40,29 @@ const visitSeedData = [
 async function seedVisits() {
     const db = await openDb();
 
-    // Create table
     await db.exec(`
-    CREATE TABLE IF NOT EXISTS visits (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      title TEXT NOT NULL,
-      location TEXT,
-      year INTEGER,
-      date TEXT,
-      description TEXT,
-      thumbnail TEXT,
-      images TEXT,
-      tags TEXT,
-      UNIQUE(title, year)
-    );
-  `);
+        CREATE TABLE IF NOT EXISTS visits (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            location TEXT,
+            year INTEGER,
+            date TEXT,
+            description TEXT,
+            thumbnail TEXT,
+            images TEXT,
+            tags TEXT,
+            UNIQUE(title, year)
+        );
+    `);
 
-    // 🔥 Clear all old data
     await db.run(`DELETE FROM visits`);
-    console.log('🧹 All existing visit timeline data cleared.');
+    if (isVerbose) console.log('🧹 All existing visit timeline data cleared.');
 
-    // Insert new data
     for (const visit of visitSeedData) {
         try {
             await db.run(
                 `INSERT INTO visits (title, location, year, date, description, thumbnail, images, tags)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
                     visit.title,
                     visit.location,
@@ -73,15 +74,17 @@ async function seedVisits() {
                     visit.tags
                 ]
             );
-            console.log(`🆕 Inserted: ${visit.title}`);
+            if (isVerbose) console.log(`🆕 Inserted: ${visit.title}`);
         } catch (err) {
-            console.error(`❌ Error inserting ${visit.title}:`, err.message);
+            if (isVerbose) console.error(`❌ Error inserting ${visit.title}:`, err.message);
         }
     }
 
-    const allVisits = await db.all('SELECT * FROM visits');
-    console.log('\n📍 Current visits in DB:');
-    console.table(allVisits);
+    if (isVerbose) {
+        const allVisits = await db.all('SELECT * FROM visits');
+        console.log('\n📍 Current visits in DB:');
+        console.table(allVisits);
+    }
 }
 
 seedVisits().catch(console.error);

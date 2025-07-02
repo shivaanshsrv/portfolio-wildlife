@@ -1,5 +1,11 @@
+
+
+
 // backend/database/seedPhotos.js
 import { openDb } from './database.js';
+
+// Check if --verbose flag is passed
+const isVerbose = process.argv.includes('--verbose');
 
 const photoSeedData = [
     {
@@ -52,41 +58,40 @@ const photoSeedData = [
 async function seedPhotos() {
     const db = await openDb();
 
-    // Create table with UNIQUE constraint
     await db.exec(`
-    CREATE TABLE IF NOT EXISTS photos (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      src TEXT NOT NULL UNIQUE,
-      title TEXT NOT NULL,
-      location TEXT,
-      year INTEGER,
-      tags TEXT,
-      animal TEXT,
-      description TEXT
-    );
-  `);
+        CREATE TABLE IF NOT EXISTS photos (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            src TEXT NOT NULL UNIQUE,
+            title TEXT NOT NULL,
+            location TEXT,
+            year INTEGER,
+            tags TEXT,
+            animal TEXT,
+            description TEXT
+        );
+    `);
 
-    // 🔥 Delete all existing photo records
     await db.run(`DELETE FROM photos`);
-    console.log('🧹 All existing photo data cleared.');
+    if (isVerbose) console.log('🧹 All existing photo data cleared.');
 
-    // Insert new photos
     for (const photo of photoSeedData) {
         try {
             await db.run(
                 `INSERT INTO photos (src, title, location, year, tags, animal, description)
-         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                 VALUES (?, ?, ?, ?, ?, ?, ?)`,
                 [photo.src, photo.title, photo.location, photo.year, photo.tags, photo.animal, photo.description]
             );
-            console.log(`🆕 Inserted: ${photo.title}`);
+            if (isVerbose) console.log(`🆕 Inserted: ${photo.title}`);
         } catch (err) {
-            console.error(`❌ Error inserting ${photo.title}:`, err.message);
+            if (isVerbose) console.error(`❌ Error inserting ${photo.title}:`, err.message);
         }
     }
 
-    const allPhotos = await db.all('SELECT * FROM photos');
-    console.log('\n📸 Current photos in DB:');
-    console.table(allPhotos);
+    if (isVerbose) {
+        const allPhotos = await db.all('SELECT * FROM photos');
+        console.log('\n📸 Current photos in DB:');
+        console.table(allPhotos);
+    }
 }
 
 seedPhotos().catch(console.error);

@@ -75,6 +75,7 @@ body {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    margin-bottom: 6rem;
 }
 
 .hero-bg {
@@ -793,3 +794,96 @@ body {
 #photoModal strong {
   color: #7c9885;
 }
+/* Gallery Section */
+.gallery-section {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+}
+
+.gallery-carousel {
+  flex: 1;
+  display: flex;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 40px;
+  gap: 40px;
+}
+
+.gallery-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery-card {
+  flex: 0 0 40vw;
+  height: calc(100vh - 80px);
+  scroll-snap-align: start;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  background: #000;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.gallery-card img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.gallery-card-content {
+  position: relative;
+  z-index: 2;
+  padding: 20px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+}
+
+.gallery-card h3 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.gallery-card p {
+  font-size: 1rem;
+  margin-top: 10px;
+}
+
+.gallery-nav {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+  z-index: 3;
+}
+
+.nav-btn {
+  width: 40px;
+  height: 40px;
+  background: white;
+  color: black;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: background 0.2s ease;
+}
+
+.nav-btn:hover {
+  background: #f0f0f0;
+}
+

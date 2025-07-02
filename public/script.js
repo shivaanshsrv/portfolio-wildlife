@@ -35,80 +35,60 @@ async function fetchAndRenderVisits() {
     }
 }
 
-
-
-
-// const visitData = [
-//     {
-//         id: 1,
-//         title: 'Highland Birds Expedition',
-//         location: 'Scottish Highlands',
-//         year: 2024,
-//         date: 'March 2024',
-//         description: 'A focused expedition to document the magnificent birds of prey in the Scottish Highlands, including the endangered Golden Eagle.',
-//         thumbnail: 'https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=300&h=200&fit=crop',
-//         images: [1],
-//         tags: ['bird', 'endangered']
-//     },
-//     {
-//         id: 2,
-//         title: 'Costa Rica Biodiversity',
-//         location: 'Costa Rica Rainforest',
-//         year: 2023,
-//         date: 'November 2023',
-//         description: 'Exploring the incredible biodiversity of Costa Rican rainforests, focusing on hummingbirds and tropical species.',
-//         thumbnail: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=300&h=200&fit=crop',
-//         images: [2],
-//         tags: ['bird', 'tropical']
-//     },
-//     {
-//         id: 5,
-//         title: 'Alaska Wilderness',
-//         location: 'Alaska',
-//         year: 2022,
-//         date: 'June 2022',
-//         description: 'Remote wilderness expedition in Alaska, documenting wolves, marine life, and pristine landscapes.',
-//         thumbnail: 'https://images.unsplash.com/photo-1583212292454-1fe6229603b7?w=300&h=200&fit=crop',
-//         images: [6, 10],
-//         tags: ['mammal', 'marine', 'wilderness']
-//     }
-// ];
-
-
-const eventData = [
-    {
-        id: 1,
-        title: 'Wildlife Conservation Exhibition',
-        description: 'A comprehensive exhibition showcasing endangered species photography from around the world, aimed at raising awareness for wildlife conservation.',
-        image: 'https://images.unsplash.com/photo-1564349683136-77e08dba1ef7?w=500&h=300&fit=crop',
-        year: 2024,
-        venue: 'National Geographic Gallery'
-    },
-    // {
-    //     id: 2,
-    //     title: 'Arctic Wildlife Symposium',
-    //     description: 'Speaking engagement and photo presentation about the changing Arctic ecosystem and its impact on polar wildlife.',
-    //     image: 'https://images.unsplash.com/photo-1549366021-9f761d040a94?w=500&h=300&fit=crop',
-    //     year: 2024,
-    //     venue: 'Climate Change Conference'
-    // },
-    {
-        id: 3,
-        title: 'Bird Photography Workshop',
-        description: 'Educational workshop teaching advanced techniques for bird photography, including ethical practices and conservation awareness.',
-        image: 'https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=500&h=300&fit=crop',
-        year: 2023,
-        venue: 'Audubon Society'
-    },
-    {
-        id: 4,
-        title: 'African Wildlife Documentary',
-        description: 'Collaboration with BBC Wildlife for a documentary series about African conservation efforts and endangered species.',
-        image: 'https://images.unsplash.com/photo-1551969014-7d2c4cddf0b6?w=500&h=300&fit=crop',
-        year: 2023,
-        venue: 'BBC Studios'
+async function fetchAndRenderEvents() {
+    try {
+        const res = await fetch('http://localhost:3000/api/events');
+        const eventData = await res.json();
+        renderEvents(eventData); // 👈 pass to renderer
+    } catch (err) {
+        console.error('Failed to load events', err);
     }
-];
+}
+
+async function fetchPhotosAndRenderCarousel() {
+    try {
+        const res = await fetch('/api/photos');
+        const photos = await res.json();
+
+        const carousel = document.getElementById('galleryCarousel');
+        carousel.innerHTML = '';
+
+        photos.forEach(photo => {
+            const card = document.createElement('div');
+            card.className = 'gallery-card';
+            card.innerHTML = `
+        <img src="${photo.src}" alt="${photo.title}" />
+        <div class="gallery-card-content">
+          <h3>${photo.title}</h3>
+          <p>${photo.location} • ${photo.year}</p>
+          <p>${photo.description}</p>
+        </div>
+      `;
+            carousel.appendChild(card);
+        });
+    } catch (err) {
+        console.error('❌ Failed to load photos:', err);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    fetchPhotosAndRenderCarousel();
+
+    document.getElementById('prevBtn').addEventListener('click', () => {
+        document.getElementById('galleryCarousel').scrollBy({
+            left: -window.innerWidth * 0.4,
+            behavior: 'smooth'
+        });
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', () => {
+        document.getElementById('galleryCarousel').scrollBy({
+            left: window.innerWidth * 0.4,
+            behavior: 'smooth'
+        });
+    });
+});
+
 
 // Global variables
 let currentFilter = 'all';
@@ -306,13 +286,13 @@ function openVisitModal(visit) {
 }
 
 // Events Functions
-function renderEvents() {
+function renderEvents(events) {
     const eventsGrid = document.getElementById('eventsGrid');
     if (!eventsGrid) return;
 
     eventsGrid.innerHTML = '';
 
-    eventData.forEach(event => {
+    events.forEach(event => {
         const eventCard = document.createElement('div');
         eventCard.className = 'event-card';
         eventCard.innerHTML = `
@@ -325,11 +305,11 @@ function renderEvents() {
         <p class="event-description">${event.description}</p>
       </div>
     `;
-
         eventCard.addEventListener('click', () => openEventModal(event));
         eventsGrid.appendChild(eventCard);
     });
 }
+
 
 function openEventModal(event) {
     const modal = document.getElementById('eventModal');
@@ -479,8 +459,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Render initial content
     renderGallery();
     renderVisitTimeline();
-    fetchAndRenderVisits(); 
-    renderEvents();
+    fetchAndRenderVisits();
+    fetchAndRenderEvents();
 
     // Setup event listeners
     setupEventListeners();

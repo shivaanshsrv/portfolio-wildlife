@@ -21,6 +21,12 @@ app.get('/api/visits', async (req, res) => {
     res.json(visits);
 });
 
+app.get('/api/events', async (req, res) => {
+  const db = await openDb();
+  const events = await db.all('SELECT * FROM events');
+  res.json(events);
+});
+
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
