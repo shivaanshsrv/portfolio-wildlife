@@ -1,0 +1,28 @@
+{
+  "name": "wildfile",
+  "version": "1.0.0",
+  "description": "",
+  "main": "backend/app.js",
+
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon backend/server.js",
+    "start": "node backend/server.js",
+    "seed:photos": "node backend/database/seedPhotos.js"
+
+
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
