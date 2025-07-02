@@ -38,15 +38,15 @@ const photoSeedData = [
         animal: 'Giant Panda',
         description: 'Giant panda in its natural habitat.'
     },
-    // {
-    //     src: '/images/racoon.jpg',
-    //     title: 'racoon',
-    //     location: 'Eastern Himalayas',
-    //     year: 2023,
-    //     tags: 'mammal,endangered',
-    //     animal: 'Giant Panda',
-    //     description: 'Giant panda in its natural habitat.'
-    // }
+    {
+        src: '/images/racoon.jpg',
+        title: 'racoon',
+        location: 'Eastern Himalayas',
+        year: 2023,
+        tags: 'mammal,endangered',
+        animal: 'Giant Panda',
+        description: 'Giant panda in its natural habitat.'
+    }
 ];
 
 async function seedPhotos() {

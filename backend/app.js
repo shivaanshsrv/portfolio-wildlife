@@ -14,6 +14,14 @@ app.get('/api/photos', async (req, res) => {
     res.json(photos);
 });
 
+// GET /api/visits
+app.get('/api/visits', async (req, res) => {
+    const db = await openDb();
+    const visits = await db.all('SELECT * FROM visits');
+    res.json(visits);
+});
+
+
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });

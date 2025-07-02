@@ -17,42 +17,62 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchAndRenderPhotos();
 });
 
+async function fetchAndRenderVisits() {
+    try {
+        const res = await fetch('http://localhost:3000/api/visits');
+        const data = await res.json();
 
-const visitData = [
-    {
-        id: 1,
-        title: 'Highland Birds Expedition',
-        location: 'Scottish Highlands',
-        year: 2024,
-        date: 'March 2024',
-        description: 'A focused expedition to document the magnificent birds of prey in the Scottish Highlands, including the endangered Golden Eagle.',
-        thumbnail: 'https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=300&h=200&fit=crop',
-        images: [1],
-        tags: ['bird', 'endangered']
-    },
-    {
-        id: 2,
-        title: 'Costa Rica Biodiversity',
-        location: 'Costa Rica Rainforest',
-        year: 2023,
-        date: 'November 2023',
-        description: 'Exploring the incredible biodiversity of Costa Rican rainforests, focusing on hummingbirds and tropical species.',
-        thumbnail: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=300&h=200&fit=crop',
-        images: [2],
-        tags: ['bird', 'tropical']
-    },
-    {
-        id: 5,
-        title: 'Alaska Wilderness',
-        location: 'Alaska',
-        year: 2022,
-        date: 'June 2022',
-        description: 'Remote wilderness expedition in Alaska, documenting wolves, marine life, and pristine landscapes.',
-        thumbnail: 'https://images.unsplash.com/photo-1583212292454-1fe6229603b7?w=300&h=200&fit=crop',
-        images: [6, 10],
-        tags: ['mammal', 'marine', 'wilderness']
+        // ✅ Convert tags from string to array
+        const normalizedVisits = data.map(visit => ({
+            ...visit,
+            tags: visit.tags ? visit.tags.split(',') : []
+        }));
+
+        filteredVisits = [...normalizedVisits];
+        renderVisitTimeline(filteredVisits);
+    } catch (err) {
+        console.error('❌ Failed to load visit timeline', err);
     }
-];
+}
+
+
+
+
+// const visitData = [
+//     {
+//         id: 1,
+//         title: 'Highland Birds Expedition',
+//         location: 'Scottish Highlands',
+//         year: 2024,
+//         date: 'March 2024',
+//         description: 'A focused expedition to document the magnificent birds of prey in the Scottish Highlands, including the endangered Golden Eagle.',
+//         thumbnail: 'https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=300&h=200&fit=crop',
+//         images: [1],
+//         tags: ['bird', 'endangered']
+//     },
+//     {
+//         id: 2,
+//         title: 'Costa Rica Biodiversity',
+//         location: 'Costa Rica Rainforest',
+//         year: 2023,
+//         date: 'November 2023',
+//         description: 'Exploring the incredible biodiversity of Costa Rican rainforests, focusing on hummingbirds and tropical species.',
+//         thumbnail: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=300&h=200&fit=crop',
+//         images: [2],
+//         tags: ['bird', 'tropical']
+//     },
+//     {
+//         id: 5,
+//         title: 'Alaska Wilderness',
+//         location: 'Alaska',
+//         year: 2022,
+//         date: 'June 2022',
+//         description: 'Remote wilderness expedition in Alaska, documenting wolves, marine life, and pristine landscapes.',
+//         thumbnail: 'https://images.unsplash.com/photo-1583212292454-1fe6229603b7?w=300&h=200&fit=crop',
+//         images: [6, 10],
+//         tags: ['mammal', 'marine', 'wilderness']
+//     }
+// ];
 
 
 const eventData = [
@@ -94,7 +114,7 @@ const eventData = [
 let currentFilter = 'all';
 let currentYear = 'all';
 let filteredPhotos = [];
-let filteredVisits = [...visitData];
+let filteredVisits = [];
 
 // Utility Functions
 function debounce(func, wait) {
@@ -130,6 +150,8 @@ function renderGallery(photos) {
         galleryGrid.appendChild(item);
     });
 }
+
+
 
 
 
@@ -457,6 +479,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Render initial content
     renderGallery();
     renderVisitTimeline();
+    fetchAndRenderVisits(); 
     renderEvents();
 
     // Setup event listeners
